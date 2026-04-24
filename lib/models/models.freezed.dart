@@ -281,9 +281,7 @@ as String,
 /// @nodoc
 mixin _$MatchState {
 
- int get scoreTeamA; int get scoreTeamB; int get gameScoreA; int get gameScoreB; TeamType get currentServeTeam; Map<CourtQuadrant, Player> get positions; String? get serverId; String? get receiverId; bool get isMatchOver; bool get isMatchStarted; TeamType get leftSideTeam;// 現在左側に配置されているチーム
- bool get isWaitingForNextGame;// ゲーム終了後のインターバル中か
- String? get selectedPlayerId;
+ int get scoreTeamA; int get scoreTeamB; int get gameScoreA; int get gameScoreB; TeamType get currentServeTeam; Map<CourtQuadrant, Player> get positions; String? get serverId; String? get receiverId; bool get isMatchOver; bool get isMatchStarted; TeamType get leftSideTeam; bool get isWaitingForNextGame;
 /// Create a copy of MatchState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -296,16 +294,16 @@ $MatchStateCopyWith<MatchState> get copyWith => _$MatchStateCopyWithImpl<MatchSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchState&&(identical(other.scoreTeamA, scoreTeamA) || other.scoreTeamA == scoreTeamA)&&(identical(other.scoreTeamB, scoreTeamB) || other.scoreTeamB == scoreTeamB)&&(identical(other.gameScoreA, gameScoreA) || other.gameScoreA == gameScoreA)&&(identical(other.gameScoreB, gameScoreB) || other.gameScoreB == gameScoreB)&&(identical(other.currentServeTeam, currentServeTeam) || other.currentServeTeam == currentServeTeam)&&const DeepCollectionEquality().equals(other.positions, positions)&&(identical(other.serverId, serverId) || other.serverId == serverId)&&(identical(other.receiverId, receiverId) || other.receiverId == receiverId)&&(identical(other.isMatchOver, isMatchOver) || other.isMatchOver == isMatchOver)&&(identical(other.isMatchStarted, isMatchStarted) || other.isMatchStarted == isMatchStarted)&&(identical(other.leftSideTeam, leftSideTeam) || other.leftSideTeam == leftSideTeam)&&(identical(other.isWaitingForNextGame, isWaitingForNextGame) || other.isWaitingForNextGame == isWaitingForNextGame)&&(identical(other.selectedPlayerId, selectedPlayerId) || other.selectedPlayerId == selectedPlayerId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchState&&(identical(other.scoreTeamA, scoreTeamA) || other.scoreTeamA == scoreTeamA)&&(identical(other.scoreTeamB, scoreTeamB) || other.scoreTeamB == scoreTeamB)&&(identical(other.gameScoreA, gameScoreA) || other.gameScoreA == gameScoreA)&&(identical(other.gameScoreB, gameScoreB) || other.gameScoreB == gameScoreB)&&(identical(other.currentServeTeam, currentServeTeam) || other.currentServeTeam == currentServeTeam)&&const DeepCollectionEquality().equals(other.positions, positions)&&(identical(other.serverId, serverId) || other.serverId == serverId)&&(identical(other.receiverId, receiverId) || other.receiverId == receiverId)&&(identical(other.isMatchOver, isMatchOver) || other.isMatchOver == isMatchOver)&&(identical(other.isMatchStarted, isMatchStarted) || other.isMatchStarted == isMatchStarted)&&(identical(other.leftSideTeam, leftSideTeam) || other.leftSideTeam == leftSideTeam)&&(identical(other.isWaitingForNextGame, isWaitingForNextGame) || other.isWaitingForNextGame == isWaitingForNextGame));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,scoreTeamA,scoreTeamB,gameScoreA,gameScoreB,currentServeTeam,const DeepCollectionEquality().hash(positions),serverId,receiverId,isMatchOver,isMatchStarted,leftSideTeam,isWaitingForNextGame,selectedPlayerId);
+int get hashCode => Object.hash(runtimeType,scoreTeamA,scoreTeamB,gameScoreA,gameScoreB,currentServeTeam,const DeepCollectionEquality().hash(positions),serverId,receiverId,isMatchOver,isMatchStarted,leftSideTeam,isWaitingForNextGame);
 
 @override
 String toString() {
-  return 'MatchState(scoreTeamA: $scoreTeamA, scoreTeamB: $scoreTeamB, gameScoreA: $gameScoreA, gameScoreB: $gameScoreB, currentServeTeam: $currentServeTeam, positions: $positions, serverId: $serverId, receiverId: $receiverId, isMatchOver: $isMatchOver, isMatchStarted: $isMatchStarted, leftSideTeam: $leftSideTeam, isWaitingForNextGame: $isWaitingForNextGame, selectedPlayerId: $selectedPlayerId)';
+  return 'MatchState(scoreTeamA: $scoreTeamA, scoreTeamB: $scoreTeamB, gameScoreA: $gameScoreA, gameScoreB: $gameScoreB, currentServeTeam: $currentServeTeam, positions: $positions, serverId: $serverId, receiverId: $receiverId, isMatchOver: $isMatchOver, isMatchStarted: $isMatchStarted, leftSideTeam: $leftSideTeam, isWaitingForNextGame: $isWaitingForNextGame)';
 }
 
 
@@ -316,7 +314,7 @@ abstract mixin class $MatchStateCopyWith<$Res>  {
   factory $MatchStateCopyWith(MatchState value, $Res Function(MatchState) _then) = _$MatchStateCopyWithImpl;
 @useResult
 $Res call({
- int scoreTeamA, int scoreTeamB, int gameScoreA, int gameScoreB, TeamType currentServeTeam, Map<CourtQuadrant, Player> positions, String? serverId, String? receiverId, bool isMatchOver, bool isMatchStarted, TeamType leftSideTeam, bool isWaitingForNextGame, String? selectedPlayerId
+ int scoreTeamA, int scoreTeamB, int gameScoreA, int gameScoreB, TeamType currentServeTeam, Map<CourtQuadrant, Player> positions, String? serverId, String? receiverId, bool isMatchOver, bool isMatchStarted, TeamType leftSideTeam, bool isWaitingForNextGame
 });
 
 
@@ -333,7 +331,7 @@ class _$MatchStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? scoreTeamA = null,Object? scoreTeamB = null,Object? gameScoreA = null,Object? gameScoreB = null,Object? currentServeTeam = null,Object? positions = null,Object? serverId = freezed,Object? receiverId = freezed,Object? isMatchOver = null,Object? isMatchStarted = null,Object? leftSideTeam = null,Object? isWaitingForNextGame = null,Object? selectedPlayerId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? scoreTeamA = null,Object? scoreTeamB = null,Object? gameScoreA = null,Object? gameScoreB = null,Object? currentServeTeam = null,Object? positions = null,Object? serverId = freezed,Object? receiverId = freezed,Object? isMatchOver = null,Object? isMatchStarted = null,Object? leftSideTeam = null,Object? isWaitingForNextGame = null,}) {
   return _then(_self.copyWith(
 scoreTeamA: null == scoreTeamA ? _self.scoreTeamA : scoreTeamA // ignore: cast_nullable_to_non_nullable
 as int,scoreTeamB: null == scoreTeamB ? _self.scoreTeamB : scoreTeamB // ignore: cast_nullable_to_non_nullable
@@ -347,8 +345,7 @@ as String?,isMatchOver: null == isMatchOver ? _self.isMatchOver : isMatchOver //
 as bool,isMatchStarted: null == isMatchStarted ? _self.isMatchStarted : isMatchStarted // ignore: cast_nullable_to_non_nullable
 as bool,leftSideTeam: null == leftSideTeam ? _self.leftSideTeam : leftSideTeam // ignore: cast_nullable_to_non_nullable
 as TeamType,isWaitingForNextGame: null == isWaitingForNextGame ? _self.isWaitingForNextGame : isWaitingForNextGame // ignore: cast_nullable_to_non_nullable
-as bool,selectedPlayerId: freezed == selectedPlayerId ? _self.selectedPlayerId : selectedPlayerId // ignore: cast_nullable_to_non_nullable
-as String?,
+as bool,
   ));
 }
 
@@ -433,10 +430,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int scoreTeamA,  int scoreTeamB,  int gameScoreA,  int gameScoreB,  TeamType currentServeTeam,  Map<CourtQuadrant, Player> positions,  String? serverId,  String? receiverId,  bool isMatchOver,  bool isMatchStarted,  TeamType leftSideTeam,  bool isWaitingForNextGame,  String? selectedPlayerId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int scoreTeamA,  int scoreTeamB,  int gameScoreA,  int gameScoreB,  TeamType currentServeTeam,  Map<CourtQuadrant, Player> positions,  String? serverId,  String? receiverId,  bool isMatchOver,  bool isMatchStarted,  TeamType leftSideTeam,  bool isWaitingForNextGame)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchState() when $default != null:
-return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameScoreB,_that.currentServeTeam,_that.positions,_that.serverId,_that.receiverId,_that.isMatchOver,_that.isMatchStarted,_that.leftSideTeam,_that.isWaitingForNextGame,_that.selectedPlayerId);case _:
+return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameScoreB,_that.currentServeTeam,_that.positions,_that.serverId,_that.receiverId,_that.isMatchOver,_that.isMatchStarted,_that.leftSideTeam,_that.isWaitingForNextGame);case _:
   return orElse();
 
 }
@@ -454,10 +451,10 @@ return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameSco
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int scoreTeamA,  int scoreTeamB,  int gameScoreA,  int gameScoreB,  TeamType currentServeTeam,  Map<CourtQuadrant, Player> positions,  String? serverId,  String? receiverId,  bool isMatchOver,  bool isMatchStarted,  TeamType leftSideTeam,  bool isWaitingForNextGame,  String? selectedPlayerId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int scoreTeamA,  int scoreTeamB,  int gameScoreA,  int gameScoreB,  TeamType currentServeTeam,  Map<CourtQuadrant, Player> positions,  String? serverId,  String? receiverId,  bool isMatchOver,  bool isMatchStarted,  TeamType leftSideTeam,  bool isWaitingForNextGame)  $default,) {final _that = this;
 switch (_that) {
 case _MatchState():
-return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameScoreB,_that.currentServeTeam,_that.positions,_that.serverId,_that.receiverId,_that.isMatchOver,_that.isMatchStarted,_that.leftSideTeam,_that.isWaitingForNextGame,_that.selectedPlayerId);case _:
+return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameScoreB,_that.currentServeTeam,_that.positions,_that.serverId,_that.receiverId,_that.isMatchOver,_that.isMatchStarted,_that.leftSideTeam,_that.isWaitingForNextGame);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -474,10 +471,10 @@ return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameSco
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int scoreTeamA,  int scoreTeamB,  int gameScoreA,  int gameScoreB,  TeamType currentServeTeam,  Map<CourtQuadrant, Player> positions,  String? serverId,  String? receiverId,  bool isMatchOver,  bool isMatchStarted,  TeamType leftSideTeam,  bool isWaitingForNextGame,  String? selectedPlayerId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int scoreTeamA,  int scoreTeamB,  int gameScoreA,  int gameScoreB,  TeamType currentServeTeam,  Map<CourtQuadrant, Player> positions,  String? serverId,  String? receiverId,  bool isMatchOver,  bool isMatchStarted,  TeamType leftSideTeam,  bool isWaitingForNextGame)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchState() when $default != null:
-return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameScoreB,_that.currentServeTeam,_that.positions,_that.serverId,_that.receiverId,_that.isMatchOver,_that.isMatchStarted,_that.leftSideTeam,_that.isWaitingForNextGame,_that.selectedPlayerId);case _:
+return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameScoreB,_that.currentServeTeam,_that.positions,_that.serverId,_that.receiverId,_that.isMatchOver,_that.isMatchStarted,_that.leftSideTeam,_that.isWaitingForNextGame);case _:
   return null;
 
 }
@@ -489,7 +486,7 @@ return $default(_that.scoreTeamA,_that.scoreTeamB,_that.gameScoreA,_that.gameSco
 @JsonSerializable()
 
 class _MatchState implements MatchState {
-  const _MatchState({this.scoreTeamA = 0, this.scoreTeamB = 0, this.gameScoreA = 0, this.gameScoreB = 0, required this.currentServeTeam, required final  Map<CourtQuadrant, Player> positions, this.serverId, this.receiverId, this.isMatchOver = false, this.isMatchStarted = false, this.leftSideTeam = TeamType.teamA, this.isWaitingForNextGame = false, this.selectedPlayerId}): _positions = positions;
+  const _MatchState({this.scoreTeamA = 0, this.scoreTeamB = 0, this.gameScoreA = 0, this.gameScoreB = 0, required this.currentServeTeam, required final  Map<CourtQuadrant, Player> positions, this.serverId, this.receiverId, this.isMatchOver = false, this.isMatchStarted = false, this.leftSideTeam = TeamType.teamA, this.isWaitingForNextGame = false}): _positions = positions;
   factory _MatchState.fromJson(Map<String, dynamic> json) => _$MatchStateFromJson(json);
 
 @override@JsonKey() final  int scoreTeamA;
@@ -509,10 +506,7 @@ class _MatchState implements MatchState {
 @override@JsonKey() final  bool isMatchOver;
 @override@JsonKey() final  bool isMatchStarted;
 @override@JsonKey() final  TeamType leftSideTeam;
-// 現在左側に配置されているチーム
 @override@JsonKey() final  bool isWaitingForNextGame;
-// ゲーム終了後のインターバル中か
-@override final  String? selectedPlayerId;
 
 /// Create a copy of MatchState
 /// with the given fields replaced by the non-null parameter values.
@@ -527,16 +521,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchState&&(identical(other.scoreTeamA, scoreTeamA) || other.scoreTeamA == scoreTeamA)&&(identical(other.scoreTeamB, scoreTeamB) || other.scoreTeamB == scoreTeamB)&&(identical(other.gameScoreA, gameScoreA) || other.gameScoreA == gameScoreA)&&(identical(other.gameScoreB, gameScoreB) || other.gameScoreB == gameScoreB)&&(identical(other.currentServeTeam, currentServeTeam) || other.currentServeTeam == currentServeTeam)&&const DeepCollectionEquality().equals(other._positions, _positions)&&(identical(other.serverId, serverId) || other.serverId == serverId)&&(identical(other.receiverId, receiverId) || other.receiverId == receiverId)&&(identical(other.isMatchOver, isMatchOver) || other.isMatchOver == isMatchOver)&&(identical(other.isMatchStarted, isMatchStarted) || other.isMatchStarted == isMatchStarted)&&(identical(other.leftSideTeam, leftSideTeam) || other.leftSideTeam == leftSideTeam)&&(identical(other.isWaitingForNextGame, isWaitingForNextGame) || other.isWaitingForNextGame == isWaitingForNextGame)&&(identical(other.selectedPlayerId, selectedPlayerId) || other.selectedPlayerId == selectedPlayerId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchState&&(identical(other.scoreTeamA, scoreTeamA) || other.scoreTeamA == scoreTeamA)&&(identical(other.scoreTeamB, scoreTeamB) || other.scoreTeamB == scoreTeamB)&&(identical(other.gameScoreA, gameScoreA) || other.gameScoreA == gameScoreA)&&(identical(other.gameScoreB, gameScoreB) || other.gameScoreB == gameScoreB)&&(identical(other.currentServeTeam, currentServeTeam) || other.currentServeTeam == currentServeTeam)&&const DeepCollectionEquality().equals(other._positions, _positions)&&(identical(other.serverId, serverId) || other.serverId == serverId)&&(identical(other.receiverId, receiverId) || other.receiverId == receiverId)&&(identical(other.isMatchOver, isMatchOver) || other.isMatchOver == isMatchOver)&&(identical(other.isMatchStarted, isMatchStarted) || other.isMatchStarted == isMatchStarted)&&(identical(other.leftSideTeam, leftSideTeam) || other.leftSideTeam == leftSideTeam)&&(identical(other.isWaitingForNextGame, isWaitingForNextGame) || other.isWaitingForNextGame == isWaitingForNextGame));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,scoreTeamA,scoreTeamB,gameScoreA,gameScoreB,currentServeTeam,const DeepCollectionEquality().hash(_positions),serverId,receiverId,isMatchOver,isMatchStarted,leftSideTeam,isWaitingForNextGame,selectedPlayerId);
+int get hashCode => Object.hash(runtimeType,scoreTeamA,scoreTeamB,gameScoreA,gameScoreB,currentServeTeam,const DeepCollectionEquality().hash(_positions),serverId,receiverId,isMatchOver,isMatchStarted,leftSideTeam,isWaitingForNextGame);
 
 @override
 String toString() {
-  return 'MatchState(scoreTeamA: $scoreTeamA, scoreTeamB: $scoreTeamB, gameScoreA: $gameScoreA, gameScoreB: $gameScoreB, currentServeTeam: $currentServeTeam, positions: $positions, serverId: $serverId, receiverId: $receiverId, isMatchOver: $isMatchOver, isMatchStarted: $isMatchStarted, leftSideTeam: $leftSideTeam, isWaitingForNextGame: $isWaitingForNextGame, selectedPlayerId: $selectedPlayerId)';
+  return 'MatchState(scoreTeamA: $scoreTeamA, scoreTeamB: $scoreTeamB, gameScoreA: $gameScoreA, gameScoreB: $gameScoreB, currentServeTeam: $currentServeTeam, positions: $positions, serverId: $serverId, receiverId: $receiverId, isMatchOver: $isMatchOver, isMatchStarted: $isMatchStarted, leftSideTeam: $leftSideTeam, isWaitingForNextGame: $isWaitingForNextGame)';
 }
 
 
@@ -547,7 +541,7 @@ abstract mixin class _$MatchStateCopyWith<$Res> implements $MatchStateCopyWith<$
   factory _$MatchStateCopyWith(_MatchState value, $Res Function(_MatchState) _then) = __$MatchStateCopyWithImpl;
 @override @useResult
 $Res call({
- int scoreTeamA, int scoreTeamB, int gameScoreA, int gameScoreB, TeamType currentServeTeam, Map<CourtQuadrant, Player> positions, String? serverId, String? receiverId, bool isMatchOver, bool isMatchStarted, TeamType leftSideTeam, bool isWaitingForNextGame, String? selectedPlayerId
+ int scoreTeamA, int scoreTeamB, int gameScoreA, int gameScoreB, TeamType currentServeTeam, Map<CourtQuadrant, Player> positions, String? serverId, String? receiverId, bool isMatchOver, bool isMatchStarted, TeamType leftSideTeam, bool isWaitingForNextGame
 });
 
 
@@ -564,7 +558,7 @@ class __$MatchStateCopyWithImpl<$Res>
 
 /// Create a copy of MatchState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? scoreTeamA = null,Object? scoreTeamB = null,Object? gameScoreA = null,Object? gameScoreB = null,Object? currentServeTeam = null,Object? positions = null,Object? serverId = freezed,Object? receiverId = freezed,Object? isMatchOver = null,Object? isMatchStarted = null,Object? leftSideTeam = null,Object? isWaitingForNextGame = null,Object? selectedPlayerId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? scoreTeamA = null,Object? scoreTeamB = null,Object? gameScoreA = null,Object? gameScoreB = null,Object? currentServeTeam = null,Object? positions = null,Object? serverId = freezed,Object? receiverId = freezed,Object? isMatchOver = null,Object? isMatchStarted = null,Object? leftSideTeam = null,Object? isWaitingForNextGame = null,}) {
   return _then(_MatchState(
 scoreTeamA: null == scoreTeamA ? _self.scoreTeamA : scoreTeamA // ignore: cast_nullable_to_non_nullable
 as int,scoreTeamB: null == scoreTeamB ? _self.scoreTeamB : scoreTeamB // ignore: cast_nullable_to_non_nullable
@@ -578,8 +572,7 @@ as String?,isMatchOver: null == isMatchOver ? _self.isMatchOver : isMatchOver //
 as bool,isMatchStarted: null == isMatchStarted ? _self.isMatchStarted : isMatchStarted // ignore: cast_nullable_to_non_nullable
 as bool,leftSideTeam: null == leftSideTeam ? _self.leftSideTeam : leftSideTeam // ignore: cast_nullable_to_non_nullable
 as TeamType,isWaitingForNextGame: null == isWaitingForNextGame ? _self.isWaitingForNextGame : isWaitingForNextGame // ignore: cast_nullable_to_non_nullable
-as bool,selectedPlayerId: freezed == selectedPlayerId ? _self.selectedPlayerId : selectedPlayerId // ignore: cast_nullable_to_non_nullable
-as String?,
+as bool,
   ));
 }
 
@@ -859,7 +852,7 @@ as int,
 /// @nodoc
 mixin _$MatchHistory {
 
- List<MatchState> get states; int get currentIndex; MatchSettings get settings;
+ List<MatchState> get states; int get currentIndex; MatchSettings get settings; DateTime? get startTime;
 /// Create a copy of MatchHistory
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -872,16 +865,16 @@ $MatchHistoryCopyWith<MatchHistory> get copyWith => _$MatchHistoryCopyWithImpl<M
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchHistory&&const DeepCollectionEquality().equals(other.states, states)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.settings, settings) || other.settings == settings));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MatchHistory&&const DeepCollectionEquality().equals(other.states, states)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.startTime, startTime) || other.startTime == startTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(states),currentIndex,settings);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(states),currentIndex,settings,startTime);
 
 @override
 String toString() {
-  return 'MatchHistory(states: $states, currentIndex: $currentIndex, settings: $settings)';
+  return 'MatchHistory(states: $states, currentIndex: $currentIndex, settings: $settings, startTime: $startTime)';
 }
 
 
@@ -892,7 +885,7 @@ abstract mixin class $MatchHistoryCopyWith<$Res>  {
   factory $MatchHistoryCopyWith(MatchHistory value, $Res Function(MatchHistory) _then) = _$MatchHistoryCopyWithImpl;
 @useResult
 $Res call({
- List<MatchState> states, int currentIndex, MatchSettings settings
+ List<MatchState> states, int currentIndex, MatchSettings settings, DateTime? startTime
 });
 
 
@@ -909,12 +902,13 @@ class _$MatchHistoryCopyWithImpl<$Res>
 
 /// Create a copy of MatchHistory
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? states = null,Object? currentIndex = null,Object? settings = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? states = null,Object? currentIndex = null,Object? settings = null,Object? startTime = freezed,}) {
   return _then(_self.copyWith(
 states: null == states ? _self.states : states // ignore: cast_nullable_to_non_nullable
 as List<MatchState>,currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
 as int,settings: null == settings ? _self.settings : settings // ignore: cast_nullable_to_non_nullable
-as MatchSettings,
+as MatchSettings,startTime: freezed == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 /// Create a copy of MatchHistory
@@ -1008,10 +1002,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<MatchState> states,  int currentIndex,  MatchSettings settings)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<MatchState> states,  int currentIndex,  MatchSettings settings,  DateTime? startTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MatchHistory() when $default != null:
-return $default(_that.states,_that.currentIndex,_that.settings);case _:
+return $default(_that.states,_that.currentIndex,_that.settings,_that.startTime);case _:
   return orElse();
 
 }
@@ -1029,10 +1023,10 @@ return $default(_that.states,_that.currentIndex,_that.settings);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<MatchState> states,  int currentIndex,  MatchSettings settings)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<MatchState> states,  int currentIndex,  MatchSettings settings,  DateTime? startTime)  $default,) {final _that = this;
 switch (_that) {
 case _MatchHistory():
-return $default(_that.states,_that.currentIndex,_that.settings);case _:
+return $default(_that.states,_that.currentIndex,_that.settings,_that.startTime);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1049,10 +1043,10 @@ return $default(_that.states,_that.currentIndex,_that.settings);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<MatchState> states,  int currentIndex,  MatchSettings settings)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<MatchState> states,  int currentIndex,  MatchSettings settings,  DateTime? startTime)?  $default,) {final _that = this;
 switch (_that) {
 case _MatchHistory() when $default != null:
-return $default(_that.states,_that.currentIndex,_that.settings);case _:
+return $default(_that.states,_that.currentIndex,_that.settings,_that.startTime);case _:
   return null;
 
 }
@@ -1064,7 +1058,7 @@ return $default(_that.states,_that.currentIndex,_that.settings);case _:
 @JsonSerializable()
 
 class _MatchHistory implements MatchHistory {
-  const _MatchHistory({final  List<MatchState> states = const [], this.currentIndex = 0, required this.settings}): _states = states;
+  const _MatchHistory({final  List<MatchState> states = const [], this.currentIndex = 0, required this.settings, this.startTime}): _states = states;
   factory _MatchHistory.fromJson(Map<String, dynamic> json) => _$MatchHistoryFromJson(json);
 
  final  List<MatchState> _states;
@@ -1076,6 +1070,7 @@ class _MatchHistory implements MatchHistory {
 
 @override@JsonKey() final  int currentIndex;
 @override final  MatchSettings settings;
+@override final  DateTime? startTime;
 
 /// Create a copy of MatchHistory
 /// with the given fields replaced by the non-null parameter values.
@@ -1090,16 +1085,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchHistory&&const DeepCollectionEquality().equals(other._states, _states)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.settings, settings) || other.settings == settings));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MatchHistory&&const DeepCollectionEquality().equals(other._states, _states)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.startTime, startTime) || other.startTime == startTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_states),currentIndex,settings);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_states),currentIndex,settings,startTime);
 
 @override
 String toString() {
-  return 'MatchHistory(states: $states, currentIndex: $currentIndex, settings: $settings)';
+  return 'MatchHistory(states: $states, currentIndex: $currentIndex, settings: $settings, startTime: $startTime)';
 }
 
 
@@ -1110,7 +1105,7 @@ abstract mixin class _$MatchHistoryCopyWith<$Res> implements $MatchHistoryCopyWi
   factory _$MatchHistoryCopyWith(_MatchHistory value, $Res Function(_MatchHistory) _then) = __$MatchHistoryCopyWithImpl;
 @override @useResult
 $Res call({
- List<MatchState> states, int currentIndex, MatchSettings settings
+ List<MatchState> states, int currentIndex, MatchSettings settings, DateTime? startTime
 });
 
 
@@ -1127,12 +1122,13 @@ class __$MatchHistoryCopyWithImpl<$Res>
 
 /// Create a copy of MatchHistory
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? states = null,Object? currentIndex = null,Object? settings = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? states = null,Object? currentIndex = null,Object? settings = null,Object? startTime = freezed,}) {
   return _then(_MatchHistory(
 states: null == states ? _self._states : states // ignore: cast_nullable_to_non_nullable
 as List<MatchState>,currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
 as int,settings: null == settings ? _self.settings : settings // ignore: cast_nullable_to_non_nullable
-as MatchSettings,
+as MatchSettings,startTime: freezed == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

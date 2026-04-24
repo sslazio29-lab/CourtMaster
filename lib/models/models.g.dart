@@ -34,7 +34,6 @@ _MatchState _$MatchStateFromJson(Map<String, dynamic> json) => _MatchState(
       $enumDecodeNullable(_$TeamTypeEnumMap, json['leftSideTeam']) ??
       TeamType.teamA,
   isWaitingForNextGame: json['isWaitingForNextGame'] as bool? ?? false,
-  selectedPlayerId: json['selectedPlayerId'] as String?,
 );
 
 Map<String, dynamic> _$MatchStateToJson(_MatchState instance) =>
@@ -53,7 +52,6 @@ Map<String, dynamic> _$MatchStateToJson(_MatchState instance) =>
       'isMatchStarted': instance.isMatchStarted,
       'leftSideTeam': _$TeamTypeEnumMap[instance.leftSideTeam]!,
       'isWaitingForNextGame': instance.isWaitingForNextGame,
-      'selectedPlayerId': instance.selectedPlayerId,
     };
 
 const _$TeamTypeEnumMap = {TeamType.teamA: 'teamA', TeamType.teamB: 'teamB'};
@@ -90,6 +88,9 @@ _MatchHistory _$MatchHistoryFromJson(Map<String, dynamic> json) =>
       settings: MatchSettings.fromJson(
         json['settings'] as Map<String, dynamic>,
       ),
+      startTime: json['startTime'] == null
+          ? null
+          : DateTime.parse(json['startTime'] as String),
     );
 
 Map<String, dynamic> _$MatchHistoryToJson(_MatchHistory instance) =>
@@ -97,4 +98,5 @@ Map<String, dynamic> _$MatchHistoryToJson(_MatchHistory instance) =>
       'states': instance.states,
       'currentIndex': instance.currentIndex,
       'settings': instance.settings,
+      'startTime': instance.startTime?.toIso8601String(),
     };

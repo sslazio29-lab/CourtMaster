@@ -115,8 +115,15 @@ class MatchController extends ChangeNotifier {
   }
 
   void startMatch() {
-    if (currentState != null) {
+    if (currentState != null && !currentState!.isMatchStarted) {
+      // ★開始時刻が未設定なら、現在の端末時刻を記録する
+      final newStartTime = _history.startTime ?? DateTime.now();
+
       _addState(currentState!.copyWith(isMatchStarted: true));
+
+      // history自体も更新する
+      _history = _history.copyWith(startTime: newStartTime);
+      _saveAndNotify();
     }
   }
 

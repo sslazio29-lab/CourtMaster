@@ -69,6 +69,7 @@ abstract class MatchHistory with _$MatchHistory {
     @Default([]) List<MatchState> states,
     @Default(0) int currentIndex,
     required MatchSettings settings,
+    DateTime? startTime, // ← ★これを追加
   }) = _MatchHistory;
 
   factory MatchHistory.fromJson(Map<String, dynamic> json) =>
