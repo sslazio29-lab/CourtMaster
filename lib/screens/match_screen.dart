@@ -228,8 +228,7 @@ class _MatchScreenState extends State<MatchScreen> {
     );
   }
 
-  /// 縦/横共通レイアウト
-  /// コートを最大化するため、ヘッダーを1行にコンパクト化する
+  /// 縦/横共通レイアウト（isLandscapeで内部を完全に分岐させる）
   Widget _buildLayout({
     required MatchState state,
     required MatchSettings settings,
@@ -242,14 +241,12 @@ class _MatchScreenState extends State<MatchScreen> {
     required int displayGameNumber,
     required bool isLandscape,
   }) {
-    // スコア文字サイズを縮小し、縦横で最適化
-    final double scoreFontSize = isLandscape ? 32.0 : 44.0;
-    final double gameInfoFontSize = isLandscape ? 12.0 : 16.0;
-    final double iconSize = isLandscape ? 24.0 : 32.0;
+    // 戻る・進むアイコンのサイズ（縦：元の36、横：圧縮した24）
+    final double iconSize = isLandscape ? 24.0 : 36.0;
 
     return Column(
       children: [
-        // ── ヘッダー（完全1行・コンパクト）──
+        // ── ヘッダー ──
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
           child: Row(
@@ -282,46 +279,73 @@ class _MatchScreenState extends State<MatchScreen> {
                 constraints: const BoxConstraints(),
               ),
               const SizedBox(width: 8),
-              // スコア・ゲーム情報（中央・Expanded内で横並び1行化）
+
+              // ── スコア・ゲーム情報（縦横で完全にレイアウトを分ける） ──
               Expanded(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.center,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        '$leftScore - $rightScore',
-                        style: TextStyle(
-                          fontSize: scoreFontSize,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          height: 1.0,
+                child: isLandscape
+                    // 【横画面】今回完成した「1行に圧縮」する新レイアウト
+                    ? FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.center,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              '$leftScore - $rightScore',
+                              style: const TextStyle(
+                                fontSize: 44.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                height: 1.0,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              'ゲーム $displayGameNumber / ${settings.maxGames}',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.yellowAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '($leftGameScore - $rightGameScore)',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
+                      )
+                    // 【縦画面】元々最適化されていた「2段構えの大きな文字」レイアウト（完全復元）
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '$leftScore  -  $rightScore',
+                            style: const TextStyle(
+                              fontSize: 64.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              height: 1.0,
+                            ),
+                          ),
+                          Text(
+                            '第${displayGameNumber}G / ${settings.maxGames}G制  ($leftGameScore - $rightGameScore)',
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.yellowAccent,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 16),
-                      Text(
-                        'ゲーム $displayGameNumber / ${settings.maxGames}',
-                        style: TextStyle(
-                          fontSize: gameInfoFontSize,
-                          color: Colors.yellowAccent,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '($leftGameScore - $rightGameScore)',
-                        style: TextStyle(
-                          fontSize: gameInfoFontSize,
-                          color: Colors.white70,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
+
               const SizedBox(width: 8),
               // 終了ボタン
               ElevatedButton.icon(
@@ -355,14 +379,14 @@ class _MatchScreenState extends State<MatchScreen> {
             ],
           ),
         ),
-        // ── コート（最大化）──
+        // ── コート（共通で最大化） ──
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
             child: _buildCourt(state, settings),
           ),
         ),
-        // ── 得点ボタン / 試合開始ボタン ──
+        // ── 得点ボタン / 試合開始ボタン（パディングとサイズを縦横で自動調整） ──
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 8.0,
