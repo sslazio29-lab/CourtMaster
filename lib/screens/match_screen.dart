@@ -241,12 +241,12 @@ class _MatchScreenState extends State<MatchScreen> {
     required int displayGameNumber,
     required bool isLandscape,
   }) {
-    // 戻る・進むアイコンのサイズ（縦：元の36、横：圧縮した24）
+    // 戻る・進むアイコンのサイズ
     final double iconSize = isLandscape ? 24.0 : 36.0;
 
     return Column(
       children: [
-        // ── ヘッダー ──
+        // ── ヘッダー（最上部） ──
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
           child: Row(
@@ -280,10 +280,10 @@ class _MatchScreenState extends State<MatchScreen> {
               ),
               const SizedBox(width: 8),
 
-              // ── スコア・ゲーム情報（縦横で完全にレイアウトを分ける） ──
+              // スコア・ゲーム情報
               Expanded(
                 child: isLandscape
-                    // 【横画面】今回完成した「1行に圧縮」する新レイアウト
+                    // 【横画面】1行にコンパクト化
                     ? FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.center,
@@ -321,7 +321,7 @@ class _MatchScreenState extends State<MatchScreen> {
                           ],
                         ),
                       )
-                    // 【縦画面】元々最適化されていた「2段構えの大きな文字」レイアウト（完全復元）
+                    // 【縦画面】大きな文字で2段表示（元の最適化状態）
                     : Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -380,22 +380,35 @@ class _MatchScreenState extends State<MatchScreen> {
           ),
         ),
 
-        // ── コート ──
-        // 縦横で制御を変える。横画面はExpandedで最大化、縦画面はアスペクト比を固定して間延びを防ぐ。
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
-          child: isLandscape
-              ? Expanded(child: _buildCourt(state, settings))
-              : AspectRatio(
-                  aspectRatio: 2.0, // 縦画面時は横幅の半分を高さとする（自然なコート比率）
-                  child: _buildCourt(state, settings),
-                ),
-        ),
-
-        // 縦画面の時のみ、コートとボタンの間に余白（Spacer）を入れて下部の空きスペースを吸収する
+        // ★ 改善：縦画面の時、コートを垂直中央に寄せるための上部スペーサー
         if (!isLandscape) const Spacer(),
 
-        // ── 得点ボタン / 試合開始ボタン（パディングとサイズを縦横で自動調整） ──
+        // ── コート ──
+        if (isLandscape)
+          // 横画面：Expandedで残りスペースを使い切る
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 6.0,
+                vertical: 2.0,
+              ),
+              child: _buildCourt(state, settings),
+            ),
+          )
+        else
+          // 縦画面：AspectRatio(2.0)で比率を維持しつつ、上下をスペーサーで挟む
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+            child: AspectRatio(
+              aspectRatio: 2.0,
+              child: _buildCourt(state, settings),
+            ),
+          ),
+
+        // ★ 改善：縦画面の時、コートの下にもスペーサー（上下均等で中央配置）
+        if (!isLandscape) const Spacer(),
+
+        // ── 得点ボタン / 試合開始ボタン（最下部） ──
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 8.0,
