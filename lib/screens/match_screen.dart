@@ -379,13 +379,22 @@ class _MatchScreenState extends State<MatchScreen> {
             ],
           ),
         ),
-        // ── コート（共通で最大化） ──
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
-            child: _buildCourt(state, settings),
-          ),
+
+        // ── コート ──
+        // 縦横で制御を変える。横画面はExpandedで最大化、縦画面はアスペクト比を固定して間延びを防ぐ。
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+          child: isLandscape
+              ? Expanded(child: _buildCourt(state, settings))
+              : AspectRatio(
+                  aspectRatio: 2.0, // 縦画面時は横幅の半分を高さとする（自然なコート比率）
+                  child: _buildCourt(state, settings),
+                ),
         ),
+
+        // 縦画面の時のみ、コートとボタンの間に余白（Spacer）を入れて下部の空きスペースを吸収する
+        if (!isLandscape) const Spacer(),
+
         // ── 得点ボタン / 試合開始ボタン（パディングとサイズを縦横で自動調整） ──
         Padding(
           padding: EdgeInsets.symmetric(
