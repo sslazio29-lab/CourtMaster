@@ -1,4 +1,4 @@
-// D:\badminton_score\lib\screens\match_screen.dart
+// lib/screens/match_screen.dart
 
 import 'package:flutter/material.dart';
 import '../models/models.dart';
@@ -22,7 +22,9 @@ class _MatchScreenState extends State<MatchScreen> {
 
   void _handleScore(TeamType scoringTeam, bool isLeftTap) {
     final state = widget.controller.currentState;
-    if (state == null || state.isMatchOver || !state.isMatchStarted) return;
+    if (state == null || state.isMatchOver || !state.isMatchStarted) {
+      return;
+    }
 
     final now = DateTime.now();
     if (isLeftTap) {
@@ -43,7 +45,9 @@ class _MatchScreenState extends State<MatchScreen> {
 
   void _checkMatchStatus() {
     final state = widget.controller.currentState;
-    if (state == null) return;
+    if (state == null) {
+      return;
+    }
 
     if (state.isMatchOver) {
       _showMatchOverDialog();
@@ -54,7 +58,9 @@ class _MatchScreenState extends State<MatchScreen> {
 
   Future<void> _showMatchOverDialog() async {
     final state = widget.controller.currentState;
-    if (state == null) return;
+    if (state == null) {
+      return;
+    }
 
     final isTeamAWinner = state.gameScoreA > state.gameScoreB;
     final winningTeam = isTeamAWinner ? TeamType.teamA : TeamType.teamB;
@@ -84,9 +90,9 @@ class _MatchScreenState extends State<MatchScreen> {
                 }
               } catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text('PDFの生成に失敗しました: $e')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('PDFの生成に失敗しました: $e')),
+                  );
                 }
               }
             },
@@ -126,7 +132,9 @@ class _MatchScreenState extends State<MatchScreen> {
 
   Future<void> _showEditNameDialog(Player player) async {
     final state = widget.controller.currentState;
-    if (state == null || state.isMatchStarted) return;
+    if (state == null || state.isMatchStarted) {
+      return;
+    }
 
     final textController = TextEditingController(text: player.name);
     final newName = await showDialog<String>(
@@ -172,14 +180,12 @@ class _MatchScreenState extends State<MatchScreen> {
 
             final settings = widget.controller.history.settings;
             final totalGames = state.gameScoreA + state.gameScoreB + 1;
-            final displayGameNumber = totalGames <= settings.maxGames
-                ? totalGames
-                : settings.maxGames;
+            final displayGameNumber =
+                totalGames <= settings.maxGames ? totalGames : settings.maxGames;
 
             final leftTeam = state.leftSideTeam;
-            final rightTeam = leftTeam == TeamType.teamA
-                ? TeamType.teamB
-                : TeamType.teamA;
+            final rightTeam =
+                leftTeam == TeamType.teamA ? TeamType.teamB : TeamType.teamA;
 
             final leftScore = leftTeam == TeamType.teamA
                 ? state.scoreTeamA
@@ -195,154 +201,24 @@ class _MatchScreenState extends State<MatchScreen> {
                 ? state.gameScoreB
                 : state.gameScoreA;
 
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.undo,
-                                  color: Colors.white,
-                                ),
-                                iconSize: 48,
-                                onPressed: widget.controller.canUndo
-                                    ? () {
-                                        widget.controller.undo();
-                                      }
-                                    : null,
-                                tooltip: '戻る',
-                              ),
-                              const Text(
-                                '戻る',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 16),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.redo,
-                                  color: Colors.white,
-                                ),
-                                iconSize: 48,
-                                onPressed: widget.controller.canRedo
-                                    ? () {
-                                        widget.controller.redo();
-                                        _checkMatchStatus();
-                                      }
-                                    : null,
-                                tooltip: '進む',
-                              ),
-                              const Text(
-                                '進む',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => RegistrationScreen(
-                                controller: widget.controller,
-                              ),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.exit_to_app, color: Colors.red),
-                        label: const Text(
-                          '試合を終了して戻る',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final isLandscape =
+                    constraints.maxWidth > constraints.maxHeight;
 
-                Text(
-                  '$leftScore - $rightScore',
-                  style: const TextStyle(
-                    fontSize: 80,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    height: 1.0,
-                  ),
-                ),
-                Text(
-                  '第$displayGameNumberゲーム / ${settings.maxGames}ゲーム制  (ゲームカウント: $leftGameScore - $rightGameScore)',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.yellowAccent,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                Expanded(child: _buildCourt(state, settings)),
-
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: state.isMatchStarted
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildScoreButton(
-                              '左側 得点',
-                              Colors.red,
-                              () => _handleScore(leftTeam, true),
-                            ),
-                            _buildScoreButton(
-                              '右側 得点',
-                              Colors.blue,
-                              () => _handleScore(rightTeam, false),
-                            ),
-                          ],
-                        )
-                      : ElevatedButton(
-                          onPressed: () => widget.controller.startMatch(),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 48,
-                              vertical: 16,
-                            ),
-                            backgroundColor: Colors.orange,
-                          ),
-                          child: const Text(
-                            '試合再開 (配置を確定)',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                ),
-              ],
+                return _buildLayout(
+                  state: state,
+                  settings: settings,
+                  leftTeam: leftTeam,
+                  rightTeam: rightTeam,
+                  leftScore: leftScore,
+                  rightScore: rightScore,
+                  leftGameScore: leftGameScore,
+                  rightGameScore: rightGameScore,
+                  displayGameNumber: displayGameNumber,
+                  isLandscape: isLandscape,
+                );
+              },
             );
           },
         ),
@@ -350,18 +226,192 @@ class _MatchScreenState extends State<MatchScreen> {
     );
   }
 
-  Widget _buildScoreButton(String text, Color color, VoidCallback onPressed) {
+  /// 縦/横共通レイアウト
+  /// コートを最大化するため、ヘッダーを1行にコンパクト化する
+  Widget _buildLayout({
+    required MatchState state,
+    required MatchSettings settings,
+    required TeamType leftTeam,
+    required TeamType rightTeam,
+    required int leftScore,
+    required int rightScore,
+    required int leftGameScore,
+    required int rightGameScore,
+    required int displayGameNumber,
+    required bool isLandscape,
+  }) {
+    // 縦横でスコア文字サイズのみ変える
+    final double scoreFontSize = isLandscape ? 40.0 : 64.0;
+    final double gameInfoFontSize = isLandscape ? 11.0 : 14.0;
+    final double iconSize = isLandscape ? 28.0 : 36.0;
+
+    return Column(
+      children: [
+        // ── ヘッダー（1行・コンパクト）──
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+          child: Row(
+            children: [
+              // ← 戻るボタン
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                iconSize: iconSize,
+                onPressed: widget.controller.canUndo
+                    ? () => widget.controller.undo()
+                    : null,
+                tooltip: '戻る',
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+              const SizedBox(width: 4),
+              // → 進むボタン
+              IconButton(
+                icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                iconSize: iconSize,
+                onPressed: widget.controller.canRedo
+                    ? () {
+                        widget.controller.redo();
+                        _checkMatchStatus();
+                      }
+                    : null,
+                tooltip: '進む',
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+              const SizedBox(width: 8),
+              // スコア・ゲーム情報（中央・Expanded）
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '$leftScore  -  $rightScore',
+                      style: TextStyle(
+                        fontSize: scoreFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        height: 1.0,
+                      ),
+                    ),
+                    Text(
+                      '第${displayGameNumber}G / ${settings.maxGames}G制'
+                      '  ($leftGameScore - $rightGameScore)',
+                      style: TextStyle(
+                        fontSize: gameInfoFontSize,
+                        color: Colors.yellowAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              // 終了ボタン
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          RegistrationScreen(controller: widget.controller),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.exit_to_app,
+                  color: Colors.red,
+                  size: 16,
+                ),
+                label: const Text(
+                  '終了',
+                  style: TextStyle(color: Colors.red, fontSize: 13),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // ── コート（最大化）──
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+            child: _buildCourt(state, settings),
+          ),
+        ),
+        // ── 得点ボタン / 試合開始ボタン ──
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: isLandscape ? 4.0 : 12.0,
+          ),
+          child: state.isMatchStarted
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildScoreButton(
+                      '左側 得点',
+                      Colors.red,
+                      () => _handleScore(leftTeam, true),
+                      small: isLandscape,
+                    ),
+                    _buildScoreButton(
+                      '右側 得点',
+                      Colors.blue,
+                      () => _handleScore(rightTeam, false),
+                      small: isLandscape,
+                    ),
+                  ],
+                )
+              : ElevatedButton(
+                  onPressed: () => widget.controller.startMatch(),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 48,
+                      vertical: isLandscape ? 8 : 16,
+                    ),
+                    backgroundColor: Colors.orange,
+                  ),
+                  child: Text(
+                    '試合開始 (配置を確定)',
+                    style: TextStyle(
+                      fontSize: isLandscape ? 18 : 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildScoreButton(
+    String text,
+    Color color,
+    VoidCallback onPressed, {
+    bool small = false,
+  }) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        padding: EdgeInsets.symmetric(
+          horizontal: small ? 24 : 40,
+          vertical: small ? 10 : 22,
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          fontSize: 28,
+        style: TextStyle(
+          fontSize: small ? 18 : 26,
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
@@ -369,117 +419,115 @@ class _MatchScreenState extends State<MatchScreen> {
     );
   }
 
+  /// コートウィジェット（AspectRatio廃止・親のExpandedに従って最大化）
   Widget _buildCourt(MatchState state, MatchSettings settings) {
     final isFirstGame = (state.gameScoreA + state.gameScoreB) == 0;
 
-    return Center(
-      child: AspectRatio(
-        aspectRatio: 2.0,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1B5E20),
-            border: Border.all(color: Colors.white, width: 4),
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1B5E20),
+        border: Border.all(color: Colors.white, width: 4),
+      ),
+      child: Stack(
+        children: [
+          // コートのライン描画
+          Positioned.fill(
+            child: Row(
+              children: [
+                Expanded(flex: 7, child: Container()),
+                Container(width: 2, color: Colors.white70),
+                Expanded(flex: 3, child: Container()),
+                Container(width: 4, color: Colors.white),
+                Expanded(flex: 3, child: Container()),
+                Container(width: 2, color: Colors.white70),
+                Expanded(flex: 7, child: Container()),
+              ],
+            ),
           ),
-          child: Stack(
+          // 4象限
+          Row(
             children: [
-              Positioned.fill(
-                child: Row(
+              Expanded(
+                child: Column(
                   children: [
-                    Expanded(flex: 7, child: Container()),
-                    Container(width: 2, color: Colors.white70),
-                    Expanded(flex: 3, child: Container()),
-                    Container(width: 4, color: Colors.white),
-                    Expanded(flex: 3, child: Container()),
-                    Container(width: 2, color: Colors.white70),
-                    Expanded(flex: 7, child: Container()),
+                    Expanded(
+                      child: _buildQuadrant(
+                        CourtQuadrant.topLeft,
+                        state,
+                        isFirstGame,
+                      ),
+                    ),
+                    const Divider(
+                      color: Colors.white,
+                      height: 4,
+                      thickness: 4,
+                    ),
+                    Expanded(
+                      child: _buildQuadrant(
+                        CourtQuadrant.bottomLeft,
+                        state,
+                        isFirstGame,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: _buildQuadrant(
-                            CourtQuadrant.topLeft,
-                            state,
-                            isFirstGame,
-                          ),
-                        ),
-                        const Divider(
-                          color: Colors.white,
-                          height: 4,
-                          thickness: 4,
-                        ),
-                        Expanded(
-                          child: _buildQuadrant(
-                            CourtQuadrant.bottomLeft,
-                            state,
-                            isFirstGame,
-                          ),
-                        ),
-                      ],
+              Container(width: 8),
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: _buildQuadrant(
+                        CourtQuadrant.topRight,
+                        state,
+                        isFirstGame,
+                      ),
                     ),
-                  ),
-                  Container(width: 8),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: _buildQuadrant(
-                            CourtQuadrant.topRight,
-                            state,
-                            isFirstGame,
-                          ),
-                        ),
-                        const Divider(
-                          color: Colors.white,
-                          height: 4,
-                          thickness: 4,
-                        ),
-                        Expanded(
-                          child: _buildQuadrant(
-                            CourtQuadrant.bottomRight,
-                            state,
-                            isFirstGame,
-                          ),
-                        ),
-                      ],
+                    const Divider(
+                      color: Colors.white,
+                      height: 4,
+                      thickness: 4,
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: _buildQuadrant(
+                        CourtQuadrant.bottomRight,
+                        state,
+                        isFirstGame,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              if (!state.isMatchStarted && settings.isDoubles) ...[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.swap_vert,
-                      color: Colors.white,
-                      size: 64,
-                    ),
-                    onPressed: () =>
-                        widget.controller.swapInitialPositions(true),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.swap_vert,
-                      color: Colors.white,
-                      size: 64,
-                    ),
-                    onPressed: () =>
-                        widget.controller.swapInitialPositions(false),
-                  ),
-                ),
-              ],
             ],
           ),
-        ),
+          // ダブルスのポジション入れ替えボタン（試合開始前のみ）
+          if (!state.isMatchStarted && settings.isDoubles) ...[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.swap_vert,
+                  color: Colors.white,
+                  size: 64,
+                ),
+                onPressed: () =>
+                    widget.controller.swapInitialPositions(true),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.swap_vert,
+                  color: Colors.white,
+                  size: 64,
+                ),
+                onPressed: () =>
+                    widget.controller.swapInitialPositions(false),
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -493,12 +541,10 @@ class _MatchScreenState extends State<MatchScreen> {
     final isServer = player?.id == state.serverId;
     final isSetup = !state.isMatchStarted;
 
-    // 第1ゲームの初期サーバー指定は右側コート（偶数）のみ許可
     final canBeInitialServer =
         isFirstGame &&
         (quad == CourtQuadrant.bottomLeft || quad == CourtQuadrant.topRight);
 
-    // ★修正箇所：三項演算子のネストをやめ、安全にウィジェットを代入する堅牢な書き方に変更
     Widget content;
     if (player == null) {
       content = const SizedBox();

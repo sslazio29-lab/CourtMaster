@@ -1,6 +1,5 @@
 // D:\badminton_score\lib\utils\pdf_generator.dart
 
-import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -8,26 +7,47 @@ import 'package:printing/printing.dart';
 import '../models/models.dart';
 
 class PdfGenerator {
+  // メモリ枯渇（OOM）を防ぐための静的フォントキャッシュ
+  static pw.Font? _cachedRegularFont;
+  static pw.Font? _cachedBoldFont;
+
+  /// フォントを安全にロードし、メモリにキャッシュする
+  static Future<void> _loadFontsIfNeeded() async {
+    // 既にキャッシュされていればロード処理をスキップ
+    if (_cachedRegularFont != null && _cachedBoldFont != null) {
+      return;
+    }
+
+    try {
+      // メモリ制限が厳しいiOS向けに、直列（await）で1つずつ確実にロードする
+      final regularData = await rootBundle.load(
+        'assets/fonts/NotoSansJP-Regular.ttf',
+      );
+      _cachedRegularFont = pw.Font.ttf(regularData);
+
+      final boldData = await rootBundle.load(
+        'assets/fonts/NotoSansJP-Bold.ttf',
+      );
+      _cachedBoldFont = pw.Font.ttf(boldData);
+    } catch (e) {
+      throw Exception(
+        'フォントの読み込みに失敗しました。\n'
+        'PWAの初期データ保存が完了する前にオフラインになった可能性があります。\n'
+        '一度通信環境下でアプリを開き直し、数秒待ってから再度お試しください。',
+      );
+    }
+  }
+
   /// 試合履歴データからPDFを生成し、ダウンロード/共有処理を実行する
   static Future<void> generateAndDownloadScoreSheet(
     MatchHistory history,
   ) async {
     final pdf = pw.Document();
 
-    // 1. 日本語フォントの読み込み (完全オフライン)
-    late final ByteData regularFontData;
-    late final ByteData boldFontData;
-    try {
-      regularFontData = await rootBundle.load(
-        'assets/fonts/NotoSansJP-Regular.ttf',
-      );
-      boldFontData = await rootBundle.load('assets/fonts/NotoSansJP-Bold.ttf');
-    } catch (e) {
-      throw Exception('フォントファイルの読み込みに失敗しました。');
-    }
-
-    final pw.Font font = pw.Font.ttf(regularFontData);
-    final pw.Font fontBold = pw.Font.ttf(boldFontData);
+    // 1. 日本語フォントの読み込み (キャッシュを利用)
+    await _loadFontsIfNeeded();
+    final pw.Font font = _cachedRegularFont!;
+    final pw.Font fontBold = _cachedBoldFont!;
 
     // 2. 有効な履歴の抽出（Undoで消えた未来を除外）
     final validStates = history.states.sublist(0, history.currentIndex + 1);
