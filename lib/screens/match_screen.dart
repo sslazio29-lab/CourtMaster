@@ -90,9 +90,9 @@ class _MatchScreenState extends State<MatchScreen> {
                 }
               } catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('PDFの生成に失敗しました: $e')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('PDFの生成に失敗しました: $e')));
                 }
               }
             },
@@ -180,12 +180,14 @@ class _MatchScreenState extends State<MatchScreen> {
 
             final settings = widget.controller.history.settings;
             final totalGames = state.gameScoreA + state.gameScoreB + 1;
-            final displayGameNumber =
-                totalGames <= settings.maxGames ? totalGames : settings.maxGames;
+            final displayGameNumber = totalGames <= settings.maxGames
+                ? totalGames
+                : settings.maxGames;
 
             final leftTeam = state.leftSideTeam;
-            final rightTeam =
-                leftTeam == TeamType.teamA ? TeamType.teamB : TeamType.teamA;
+            final rightTeam = leftTeam == TeamType.teamA
+                ? TeamType.teamB
+                : TeamType.teamA;
 
             final leftScore = leftTeam == TeamType.teamA
                 ? state.scoreTeamA
@@ -240,17 +242,18 @@ class _MatchScreenState extends State<MatchScreen> {
     required int displayGameNumber,
     required bool isLandscape,
   }) {
-    // 縦横でスコア文字サイズのみ変える
-    final double scoreFontSize = isLandscape ? 40.0 : 64.0;
-    final double gameInfoFontSize = isLandscape ? 11.0 : 14.0;
-    final double iconSize = isLandscape ? 28.0 : 36.0;
+    // スコア文字サイズを縮小し、縦横で最適化
+    final double scoreFontSize = isLandscape ? 32.0 : 44.0;
+    final double gameInfoFontSize = isLandscape ? 12.0 : 16.0;
+    final double iconSize = isLandscape ? 24.0 : 32.0;
 
     return Column(
       children: [
-        // ── ヘッダー（1行・コンパクト）──
+        // ── ヘッダー（完全1行・コンパクト）──
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // ← 戻るボタン
               IconButton(
@@ -279,30 +282,44 @@ class _MatchScreenState extends State<MatchScreen> {
                 constraints: const BoxConstraints(),
               ),
               const SizedBox(width: 8),
-              // スコア・ゲーム情報（中央・Expanded）
+              // スコア・ゲーム情報（中央・Expanded内で横並び1行化）
               Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '$leftScore  -  $rightScore',
-                      style: TextStyle(
-                        fontSize: scoreFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        height: 1.0,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.center,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        '$leftScore - $rightScore',
+                        style: TextStyle(
+                          fontSize: scoreFontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          height: 1.0,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '第${displayGameNumber}G / ${settings.maxGames}G制'
-                      '  ($leftGameScore - $rightGameScore)',
-                      style: TextStyle(
-                        fontSize: gameInfoFontSize,
-                        color: Colors.yellowAccent,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(width: 16),
+                      Text(
+                        'ゲーム $displayGameNumber / ${settings.maxGames}',
+                        style: TextStyle(
+                          fontSize: gameInfoFontSize,
+                          color: Colors.yellowAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Text(
+                        '($leftGameScore - $rightGameScore)',
+                        style: TextStyle(
+                          fontSize: gameInfoFontSize,
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -457,11 +474,7 @@ class _MatchScreenState extends State<MatchScreen> {
                         isFirstGame,
                       ),
                     ),
-                    const Divider(
-                      color: Colors.white,
-                      height: 4,
-                      thickness: 4,
-                    ),
+                    const Divider(color: Colors.white, height: 4, thickness: 4),
                     Expanded(
                       child: _buildQuadrant(
                         CourtQuadrant.bottomLeft,
@@ -483,11 +496,7 @@ class _MatchScreenState extends State<MatchScreen> {
                         isFirstGame,
                       ),
                     ),
-                    const Divider(
-                      color: Colors.white,
-                      height: 4,
-                      thickness: 4,
-                    ),
+                    const Divider(color: Colors.white, height: 4, thickness: 4),
                     Expanded(
                       child: _buildQuadrant(
                         CourtQuadrant.bottomRight,
@@ -510,8 +519,7 @@ class _MatchScreenState extends State<MatchScreen> {
                   color: Colors.white,
                   size: 64,
                 ),
-                onPressed: () =>
-                    widget.controller.swapInitialPositions(true),
+                onPressed: () => widget.controller.swapInitialPositions(true),
               ),
             ),
             Align(
@@ -522,8 +530,7 @@ class _MatchScreenState extends State<MatchScreen> {
                   color: Colors.white,
                   size: 64,
                 ),
-                onPressed: () =>
-                    widget.controller.swapInitialPositions(false),
+                onPressed: () => widget.controller.swapInitialPositions(false),
               ),
             ),
           ],
